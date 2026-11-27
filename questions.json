@@ -3,5 +3,17 @@
     "id": 1,
     "question": "Which city hosted the 2024 Olympic Games?",
     "answer": "Paris"
+  },
+   {
+    "id": 2,
+    "category": "Cox Plate",
+    "question": "What record time did Via Sistina set when winning the 2024 W.S. Cox Plate?",
+    "answer": "2:01.07"
+  },
+  {
+    "id": 3,
+    "category": "Cox Plate",
+    "question": "Which horse won the 1980 W.S. Cox Plate?",
+    "answer": "Kingston Town"
   }
 ]
