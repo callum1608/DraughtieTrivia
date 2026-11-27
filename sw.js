@@ -1,5 +1,5 @@
-/* Draughty Trivia service worker: keeps the app and questions.json available offline. */
-const CACHE = 'draughty-trivia-v1';
+/* Draughtie Trivia service worker: keeps the app and questions.json available offline. */
+const CACHE = 'draughtie-trivia-v4';
 const PRECACHE = [
   './',
   'index.html',

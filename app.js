@@ -1,8 +1,9 @@
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'draughty-trivia-v1';
-  const OFFLINE_FLAG = 'draughty-trivia-offline-notified';
+  const STORAGE_KEY = 'draughtie-trivia-v1';
+  const LEGACY_KEY = 'draughty-trivia-v1'; // old spelling, read once so saved progress carries over
+  const OFFLINE_FLAG = 'draughtie-trivia-offline-notified';
 
   const $ = (id) => document.getElementById(id);
 
@@ -64,7 +65,7 @@
 
   function loadState() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_KEY);
       return raw ? cleanState(JSON.parse(raw)) : emptyState();
     } catch {
       return emptyState();
@@ -216,9 +217,11 @@
     current = pool[Math.floor(Math.random() * pool.length)];
     phase = 'question';
     state.seen.push(current.id);
+    state.beers.push(Date.now());
     state.session = { id: current.id, phase, ok: null };
     save();
     render();
+    buzz();
   }
 
   function reveal() {
@@ -269,14 +272,7 @@
     if (q) { current = q; phase = s.phase; } else { state.session = null; }
   }
 
-  /* ---------- Beers ---------- */
-
-  function addBeer() {
-    state.beers.push(Date.now());
-    save();
-    render();
-    buzz();
-  }
+  /* ---------- Beers (one is counted each time a new question is drawn) ---------- */
 
   function undoBeer() {
     if (!state.beers.length) { toast('No beers to remove.'); return; }
@@ -355,12 +351,12 @@
 
   function exportBackup() {
     const stamp = new Date().toISOString().slice(0, 10);
-    const payload = { app: 'draughty-trivia', version: 1, exportedAt: new Date().toISOString(), ...state };
+    const payload = { app: 'draughtie-trivia', version: 1, exportedAt: new Date().toISOString(), ...state };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `draughty-trivia-backup-${stamp}.json`;
+    a.download = `draughtie-trivia-backup-${stamp}.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -373,7 +369,7 @@
       const data = JSON.parse(await file.text());
       const looksRight =
         data && typeof data === 'object' && !Array.isArray(data) &&
-        (!data.app || data.app === 'draughty-trivia') &&
+        (!data.app || data.app === 'draughtie-trivia' || data.app === 'draughty-trivia') &&
         ['seen', 'beers', 'results', 'custom'].some((k) => Array.isArray(data[k]));
       if (!looksRight) throw new Error('shape');
       if (!confirm('Replace everything in the app with this backup?')) return;
@@ -383,7 +379,7 @@
       render();
       toast('Backup restored.');
     } catch {
-      toast("That doesn't look like a Draughty Trivia backup.");
+      toast("That doesn't look like a Draughtie Trivia backup.");
     }
   }
 
@@ -403,7 +399,6 @@
   /* ---------- Wiring ---------- */
 
   function bind() {
-    $('beerAdd').addEventListener('click', addBeer);
     $('beerUndo').addEventListener('click', undoBeer);
     $('menuBtn').addEventListener('click', openMenu);
     $('menuClose').addEventListener('click', () => closeDialog($('menu')));
