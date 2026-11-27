@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#A9011A">
+  <meta name="description" content="Offline trivia for when your beer comes in a can.">
+  <title>Draughty Trivia</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="brand">
+        <img class="logo px" src="icons/icon-192.png" alt="" width="40" height="40">
+        <h1>Draughty Trivia</h1>
+      </div>
+      <button id="menuBtn" class="menu-btn px" type="button" aria-label="Open menu">
+        <svg viewBox="0 0 12 12" width="20" height="20" aria-hidden="true">
+          <rect x="1" y="1" width="2" height="2" fill="currentColor"/>
+          <rect x="5" y="1" width="2" height="2" fill="currentColor"/>
+          <rect x="9" y="1" width="2" height="2" fill="currentColor"/>
+          <rect x="1" y="5" width="2" height="2" fill="currentColor"/>
+          <rect x="5" y="5" width="2" height="2" fill="currentColor"/>
+          <rect x="9" y="5" width="2" height="2" fill="currentColor"/>
+          <rect x="1" y="9" width="2" height="2" fill="currentColor"/>
+          <rect x="5" y="9" width="2" height="2" fill="currentColor"/>
+          <rect x="9" y="9" width="2" height="2" fill="currentColor"/>
+        </svg>
+      </button>
+    </header>
+
+    <section class="stats" aria-label="Your tally">
+      <div class="tile beers px">
+        <div class="beer-read">
+          <strong id="beerTotal">0</strong>
+          <small id="beerSub">beers, 0 today</small>
+        </div>
+        <div class="beer-ctrls">
+          <button id="beerUndo" class="btn ghost small px" type="button" aria-label="Remove last beer">-1</button>
+          <button id="beerAdd" class="btn gold px" type="button">+ Beer</button>
+        </div>
+      </div>
+      <div class="tile px">
+        <strong id="rate">-</strong>
+        <small id="rateSub">no answers yet</small>
+      </div>
+      <div class="tile px">
+        <strong id="left">0</strong>
+        <small id="leftSub">questions left</small>
+      </div>
+    </section>
+
+    <main class="card px" aria-live="polite">
+      <p id="questionText" class="question">Loading...</p>
+      <p id="cardHint" class="hint"></p>
+      <div id="answerBlock" class="answer px" hidden></div>
+      <p id="verdict" class="verdict" hidden></p>
+    </main>
+
+    <footer class="actions-bar">
+      <div id="actions" class="actions"></div>
+    </footer>
+  </div>
+
+  <dialog id="menu" class="sheet px" aria-labelledby="menuTitle">
+    <h2 id="menuTitle">Menu</h2>
+    <div class="menu-list">
+      <button id="menuImportQ" class="btn ghost left px" type="button">Import questions</button>
+      <button id="menuExport" class="btn ghost left px" type="button">Export backup</button>
+      <button id="menuRestore" class="btn ghost left px" type="button">Restore backup</button>
+      <button id="menuStartOver" class="btn ghost left px" type="button">Start questions over</button>
+      <button id="menuResetScore" class="btn ghost left px" type="button">Reset score and beers</button>
+      <button id="menuClearCustom" class="btn ghost left px" type="button">Remove imported questions</button>
+      <button id="menuInstall" class="btn gold left px" type="button" hidden>Install app</button>
+    </div>
+    <p id="menuInfo" class="info"></p>
+    <button id="menuClose" class="btn gold wide px" type="button">Close</button>
+  </dialog>
+
+  <dialog id="finished" class="sheet px" aria-labelledby="finishedTitle">
+    <h2 id="finishedTitle">That's every question</h2>
+    <p id="finishedText"></p>
+    <div class="menu-list">
+      <button id="finishedRestart" class="btn gold wide px" type="button">Start over</button>
+      <button id="finishedClose" class="btn ghost wide px" type="button">Not yet</button>
+    </div>
+  </dialog>
+
+  <input id="fileQuestions" type="file" hidden>
+  <input id="fileBackup" type="file" hidden>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
